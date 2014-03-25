@@ -20,6 +20,7 @@ class NB.Module
 
 	set_static_dir: (root_dir, pattern = '/') ->
 		NB.app.use(pattern, (req, res, next) ->
+			fs = require 'fs'
 			fs_path = require 'path'
 
 			ext = fs_path.extname(req.path)
@@ -52,19 +53,19 @@ class NB.Module
 					return
 
 			path = root_dir + req.path
+			if fs.existsSync(path)
+				code = _.get_cached_code(path)
+			else
+				path_from = fs_path.dirname(path) +
+					fs_path.sep +
+					fs_path.basename(path, ext_to) +
+					ext_from
 
-			path_from =
-				fs_path.dirname(path) +
-				fs_path.sep +
-				fs_path.basename(path, ext_to) +
-				ext_from
-
-			fs = require 'fs'
-			if not fs.existsSync(path_from)
-				next()
-				return
-
-			code = _.get_cached_code(path_from, compiler)
+				if fs.existsSync(path_from)
+					code = _.get_cached_code(path_from, compiler)
+				else
+					next()
+					return
 
 			res.set('Content-Type', content_type)
 			res.send code

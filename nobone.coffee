@@ -30,7 +30,7 @@ class NB.Nobone extends NB.Module
 		NB.app.use(NB.express.urlencoded())
 
 	init_global_router: ->
-		NB.app.use(NB.express.static('bower_components'))
+		@set_static_dir('bower_components')
 		@set_static_dir('assets')
 		NB.app.use('/usr', NB.express.static('usr'))
 
