@@ -78,3 +78,12 @@ Let's create a sample application with namespace `MOE` and named `App`.
     ```
 
 0. Visit the `http://127.0.0.1:8013` in browser, the framework should work.
+
+
+### Debug
+
+Just execute the command below:
+
+    kit/app_mgr.coffee debug
+
+It will listen to a debug port.
