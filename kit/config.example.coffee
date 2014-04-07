@@ -2,6 +2,8 @@ NB.conf = {
 
 	port: 8013
 
+	debug_port: 8014
+
 	# IF 'auto_reload_page' is enabled, it will be auto enabled.
 	enable_socket_io: false
 
