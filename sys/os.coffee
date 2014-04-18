@@ -26,6 +26,7 @@ module.exports =
 		deferred = Q.defer()
 		fs.exists path, (exists) ->
 			deferred.resolve exists
+		return deferred.promise
 
 	path: require 'path'
 
