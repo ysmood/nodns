@@ -20,7 +20,7 @@ switch process.argv[2]
 		.then ->
 			os.exists conf_path
 		.then (exists) ->
-			if exists
+			if !exists
 				console.log ">> Config file auto created.".cyan
 				os.copy example_path, conf_path
 		.done ->
