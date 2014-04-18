@@ -54,6 +54,7 @@ Let's create a sample application with namespace `MOE` and named `App`.
 0. Install dependencies.
 
     ```bash
+    npm install
     npm run-script setup
     ```
 0. Create the module.

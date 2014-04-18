@@ -21,6 +21,8 @@
     "forever": "~0.10.9",
     "request": "~2.27.0",
     "fs-extra": "~0.8.1",
+    "graceful-fs": "~2.0.3",
+    "glob": "~3.2.9",
     "nedb": "~0.9.3",
     "socket.io": "~0.9.16"
   },

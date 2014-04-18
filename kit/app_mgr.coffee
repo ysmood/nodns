@@ -1,56 +1,45 @@
 #!node_modules/.bin/coffee
 
-child_process = require 'child_process'
+require 'colors'
 Q = require 'q'
-fs = require 'fs-extra'
+os = require '../sys/os'
 
 # Path variables.
 coffee_bin = 'node_modules/.bin/coffee'
 forever_bin = 'node_modules/.bin/forever'
 app_path = process.cwd() + '/nobone.coffee'
 
-spawn = (cmd, args) ->
-	deferred = Q.defer()
-
-	ps = child_process.spawn cmd, args, { stdio: 'inherit' }
-
-	ps.on 'error', (data) ->
-		deferred.reject data
-
-	ps.on 'close', (code) ->
-		deferred.resolve code
-
-	return deferred.promise
-
 switch process.argv[2]
 	when 'setup'
+		conf_path = 'var/config.coffee'
+		example_path = 'kit/config.example.coffee'
+
 		Q.fcall ->
-			spawn 'npm', ['install']
-		.then ->
-			spawn 'node_modules/.bin/bower', ['--allow-root', 'install']
+			console.log ">> Install bower...".cyan
+			os.spawn 'node_modules/.bin/bower', ['--allow-root', 'install']
 		.then ->
 			# Auto create config file.
-			example_path = 'kit/config.example.coffee'
-			path = 'var/config.coffee'
-			if not fs.existsSync(path)
-				fs.copySync example_path, path
+			os.exists conf_path
+		.then (exists) ->
+			if exists
+				return os.copy example_path, conf_path
 		.done ->
-			console.log '>> Setup finished.'
+			console.log '>> Setup finished.'.yellow
 
 	when 'test'
 		# Redirect process io to stdio.
-		spawn coffee_bin, [app_path]
+		os.spawn coffee_bin, [app_path]
 
 	when 'debug'
 		global.NB = {}
 		require '../var/config'
-		spawn(
+		os.spawn(
 			coffee_bin
 			['--nodejs', '--debug-brk=' + NB.conf.debug_port, app_path]
 		)
 
 	when 'start'
-		spawn(
+		os.spawn(
 			forever_bin
 			[
 				'start'
@@ -61,7 +50,7 @@ switch process.argv[2]
 		)
 
 	when 'stop'
-		spawn forever_bin, ['stop', app_path]
+		os.spawn forever_bin, ['stop', app_path]
 
 	else
-		console.error '>> No such command: ' + process.argv[2]
+		console.error '>> No such command: ' + process.argv[2].red
