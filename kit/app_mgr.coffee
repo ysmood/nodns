@@ -18,11 +18,11 @@ switch process.argv[2]
 			console.log ">> Install bower...".cyan
 			os.spawn 'node_modules/.bin/bower', ['--allow-root', 'install']
 		.then ->
-			# Auto create config file.
 			os.exists conf_path
 		.then (exists) ->
 			if exists
-				return os.copy example_path, conf_path
+				console.log ">> Config file auto created.".cyan
+				os.copy example_path, conf_path
 		.done ->
 			console.log '>> Setup finished.'.yellow
 
