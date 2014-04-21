@@ -18,7 +18,10 @@ module.exports =
 			deferred.reject data
 
 		ps.on 'close', (code) ->
-			deferred.resolve code
+			if code == 0
+				deferred.resolve code
+			else
+				deferred.reject code
 
 		return deferred.promise
 
