@@ -79,11 +79,8 @@ _.mixin
 
 					t = (new Date).toLocaleTimeString()
 
-					if is_first_load
-						console.log (">> #{t} Watch: " + path).c('green')
-					else
+					if !is_first_load
 						NB.nobone.emitter.emit 'code_reload', path
-
 						console.log (">> #{t} Reload: " + path).c('green')
 				"Load error: " + path
 			)
@@ -100,8 +97,7 @@ _.mixin
 				gaze.remove(path)
 				console.log ">> Watch removed: #{path}".c('yellow')
 			)
-
-			console.log ('>> Watch: ' + path).c('blue')
+			console.log (">> #{_.t} Watch: " + path).c('green')
 
 		return NB.code_cache_pool[path]
 
@@ -203,6 +199,11 @@ _.mixin
 
 
 # Other helpers
+
+	# A getter for underscore to get current time string.
+	Object.defineProperty _, 't', {
+		get: -> '[' + new Date().toString() + ']'
+	}
 
 	# String color getter only works on none-product mode.
 	String.prototype.c = (color) ->

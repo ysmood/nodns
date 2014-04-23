@@ -104,6 +104,7 @@ class NB.Nobone extends NB.Module
 			*** #{NB.package.name.toUpperCase()} #{NB.package.version} ***
 			>> Node version: #{process.version}
 			>> Start at port: #{NB.conf.port}
+			>> Date: #{_.t}
 		""").c('cyan')
 
 
