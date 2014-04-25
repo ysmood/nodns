@@ -7,7 +7,7 @@ NB.conf = {
 	# IF 'auto_reload_page' is enabled, it will be auto enabled.
 	enable_socket_io: false
 
-	# If 'mode' is 'product', it will be disabled.
+	# If 'mode' is 'production', it will be disabled.
 	auto_reload_page: true
 
 	modules: {
@@ -36,7 +36,7 @@ NB.conf.client_conf = {
 
 }
 
-if NB.conf.mode == 'product'
+if NB.conf.mode == 'production'
 	NB.conf.auto_reload_page = false
 
 if NB.conf.auto_reload_page

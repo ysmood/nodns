@@ -103,7 +103,7 @@ class NB.Module
 
 			require './helpers'
 
-		if NB.conf.mode != 'product'
+		if NB.conf.mode != 'production'
 			require 'colors'
 
 	_init_server: ->

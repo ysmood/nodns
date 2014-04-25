@@ -87,7 +87,7 @@ _.mixin
 
 		get_code()
 
-		if NB.conf.mode != 'product'
+		if NB.conf.mode != 'production'
 			Gaze = require 'gaze'
 
 			gaze = new Gaze(path)
@@ -205,9 +205,9 @@ _.mixin
 		get: -> '[' + new Date().toString() + ']'
 	}
 
-	# String color getter only works on none-product mode.
+	# String color getter only works on none-production mode.
 	String.prototype.c = (color) ->
-		if NB.conf.mode != 'product'
+		if NB.conf.mode != 'production'
 			return this[color]
 		else
 			return this + ''
