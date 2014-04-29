@@ -1,5 +1,10 @@
 NB.conf = {
 
+	api: {
+		get_user_addr: 'http://bd.ysmood.org:8572/api/user_addr/get/'
+		get_all_user: 'http://bd.ysmood.org:8572/api/user_addr/get_all'
+	}
+
 	port: 8013
 
 	dns_port: 53
@@ -14,15 +19,14 @@ NB.conf = {
 
 	modules: {
 		'NB.Database': './sys/modules/database'
-		'NB.Storage': './sys/modules/storage'
-		'NB.Api': './sys/modules/api'
+		'NDS.Dns_faker': './dns_faker/dns_faker'
 	}
 
 	db_filename: 'var/NB.db'
 
-	load_langs: ['en', 'cn']
+	load_langs: ['en']
 
-	current_lang: ['cn']
+	current_lang: ['en']
 
 	mode: 'development'
 
