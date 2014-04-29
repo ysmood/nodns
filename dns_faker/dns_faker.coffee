@@ -23,11 +23,13 @@ class NDS.Dns_faker extends NB.Module
 			foot: @r.render('assets/ejs/foot.ejs')
 		}
 
-		@get_rule_list().done (rule_list) =>
-			data.rule_list = rule_list or []
-			data.rule_list.forEach (el) -> delete el._id
+		@get_user_list().done (user_list) =>
+			@get_rule_list().done (rule_list) =>
+				data.rule_list = rule_list or []
+				data.rule_list.forEach (el) -> delete el._id
+				data.user_list = user_list.map (el) -> el.username
 
-			res.send @r.render("dns_faker/ejs/rule_editor.ejs", data)
+				res.send @r.render("dns_faker/ejs/rule_editor.ejs", data)
 
 	put_rule_list: (req, res) =>
 		nedb = NB.database.nedb
@@ -41,8 +43,12 @@ class NDS.Dns_faker extends NB.Module
 	get_user_list: ->
 		deferred = Q.defer()
 
-		request @NB.conf.api.get_all_user, (err, res, body) ->
-			deferred.resolve JSON.parse body
+		request NB.conf.api.get_all_user, (err, res, body) ->
+			try
+				list = JSON.parse body
+				deferred.resolve list
+			catch e
+				deferred.resolve []
 
 		deferred.promise
 

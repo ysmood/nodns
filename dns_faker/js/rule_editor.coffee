@@ -3,6 +3,7 @@ class NDS.Rule_editor
 		@init_editor()
 
 	init_editor: ->
+		NDS.user_list.unshift ''
 		@$editor = $('#rule_editor')
 		@editor = new JSONEditor @$editor[0], {
 			theme: 'bootstrap3'
@@ -25,7 +26,7 @@ class NDS.Rule_editor
 						to_user: {
 							type: 'string'
 							description: 'The user name, the name will automatically convert to IP of the user.'
-							pattern: "(^[^\\s]+$)|(^$)"
+							enum: NDS.user_list
 						}
 						to: {
 							type: 'string'
