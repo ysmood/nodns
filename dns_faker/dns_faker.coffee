@@ -50,8 +50,11 @@ class NDS.Dns_faker extends NB.Module
 		deferred = Q.defer()
 
 		request NB.conf.api.get_user_addr + name, (err, res, body) ->
-			info = JSON.parse body
-			deferred.resolve info.ip_addr
+			try
+				info = JSON.parse body
+				deferred.resolve info.ip_addr
+			catch e
+				deferred.reject e
 
 		return deferred.promise
 
@@ -71,12 +74,15 @@ class NDS.Dns_faker extends NB.Module
 			rule = _.find rule_list, (el) ->
 				minimatch(domain, el.pattern)
 
-
 			if not rule
-				return null
+				deferred.resolve null
+				return
 
 			if rule.to_user
-				@get_user_ip(rule.to_user).done (ip) ->
+				@get_user_ip(rule.to_user)
+				.catch (e) ->
+					deferred.reject e
+				.done (ip) ->
 					deferred.resolve ip
 			else
 				deferred.resolve rule.to
@@ -88,6 +94,9 @@ class NDS.Dns_faker extends NB.Module
 
 		Q.fcall =>
 			@map_dns domain
+		.catch (e) ->
+			console.error e
+			return
 		.then (addr) =>
 			if addr
 				res.answer.push ndns.A {
@@ -99,7 +108,7 @@ class NDS.Dns_faker extends NB.Module
 			else
 				dns.resolve req.question[0].name, (err, addr) ->
 					if err
-						console.log err
+						console.error err
 					else
 						res.answer.push ndns.A {
 							name: domain
