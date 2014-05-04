@@ -33,7 +33,4 @@ class NB.Nobone
 			sock.on 'code_reload', (path) ->
 				location.reload()
 
-		if not NB.conf.enable_socket_io
-			require ['/socket.io/socket.io.js'], init
-		else
-			init()
+		require ['/socket.io/socket.io.js'], init
